@@ -80,8 +80,8 @@ fn main() {
     }
 
     write(&arguments.output, contents)
-    .unwrap_or_else(|error| {
-        eprintln!("Failed to write file: {}", error);
-        std::process::exit(1)
-    });
+        .unwrap_or_else(|error| {
+            eprintln!("Failed to write file: {}", error);
+            std::process::exit(1)
+        });
 } 
