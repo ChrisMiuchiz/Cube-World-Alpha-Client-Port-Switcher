@@ -60,10 +60,16 @@ fn main() {
     let arguments = Arguments::parse();
 
     let mut contents: Vec<u8> = read(&arguments.input)
-        .expect("Unable to read file.");
+        .unwrap_or_else(|error| {
+            eprintln!("Unable to read file: {}", error);
+            std::process::exit(1)
+        });
 
     let push_port_index = find_seq(&contents, &PUSH_12345.to_vec())
-        .expect("Could not find \"PUSH 12345\" in executable.");
+        .unwrap_or_else(|| {
+            eprintln!("Could not find \"PUSH 12345\" in executable.");
+            std::process::exit(1)
+        });
 
     let mut new_instruction: Vec<u8> =  vec![];
     new_instruction.write_u8(0x68).unwrap(); // Push
@@ -74,5 +80,8 @@ fn main() {
     }
 
     write(&arguments.output, contents)
-        .expect("Failed to write file.");
-}
+    .unwrap_or_else(|error| {
+        eprintln!("Failed to write file: {}", error);
+        std::process::exit(1)
+    });
+} 
