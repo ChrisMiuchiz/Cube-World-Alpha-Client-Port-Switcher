@@ -19,7 +19,7 @@ struct Arguments {
 fn find_seq(buf: &Vec<u8>, target: &Vec<u8>) -> Option<usize> {
     let mut match_start: Option<usize> = None;
     if buf.len() > 0 && target.len() > 0 {
-        for (i, e) in buf.iter().enumerate() {
+        for (i, buf_byte) in buf.iter().enumerate() {
             // Figure out where to compare in the target
             let target_i: usize = if let Some(start) = match_start {
                     i - start
@@ -28,8 +28,10 @@ fn find_seq(buf: &Vec<u8>, target: &Vec<u8>) -> Option<usize> {
                     0
                 };
 
+            let target_byte = target[target_i];
+
             // Check for match
-            if buf[i] == target[target_i] {
+            if *buf_byte == target_byte {
                 if let None = match_start {
                     match_start = Some(i);
                 }
